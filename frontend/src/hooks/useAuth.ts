@@ -14,8 +14,17 @@ export const useLogin = () => {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       authService.login(email, password),
     onSuccess: (data) => {
-      setAuth(data.user, data.accessToken, data.refreshToken);
-      history.replace('/app/home');
+      const kycStatus = data.tenant?.kycStatus ?? null;
+      setAuth(data.user, data.accessToken, data.refreshToken, [], kycStatus as any);
+      const { setTenant } = useTenantStore.getState();
+      if (data.tenant) setTenant(data.tenant as any);
+      if (!kycStatus || kycStatus === 'not_submitted' || kycStatus === 'rejected') {
+        history.replace('/app/kyc');
+      } else if (kycStatus === 'pending' || kycStatus === 'under_review') {
+        history.replace('/app/kyc/pending');
+      } else {
+        history.replace('/app/home');
+      }
     },
     onError: (error: unknown) => {
       const message = (error as any)?.response?.data?.message || 'Login failed';

@@ -11,6 +11,7 @@ export interface TenantAttributes {
   logo?: string;
   primaryColor?: string;
   settings?: Record<string, unknown>;
+  kycStatus?: 'not_submitted' | 'pending' | 'under_review' | 'approved' | 'rejected';
   trialEndsAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
@@ -28,6 +29,7 @@ export class Tenant extends Model<TenantAttributes, TenantCreationAttributes> im
   declare logo?: string;
   declare primaryColor?: string;
   declare settings?: Record<string, unknown>;
+  declare kycStatus?: 'not_submitted' | 'pending' | 'under_review' | 'approved' | 'rejected';
   declare trialEndsAt?: Date;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -77,6 +79,10 @@ Tenant.init(
       type: DataTypes.JSON,
       allowNull: true,
       defaultValue: {},
+    },
+    kycStatus: {
+      type: DataTypes.ENUM('not_submitted', 'pending', 'under_review', 'approved', 'rejected'),
+      defaultValue: 'not_submitted',
     },
     trialEndsAt: {
       type: DataTypes.DATE,

@@ -14,6 +14,7 @@ import auditLogRoutes from './auditLog.routes';
 import fileRoutes from './file.routes';
 import settingRoutes from './setting.routes';
 import dashboardRoutes from './dashboard.routes';
+import kycRoutes from './kyc.routes';
 
 const router = Router();
 
@@ -33,5 +34,6 @@ router.use('/audit-logs', auditLogRoutes);
 router.use('/files', fileRoutes);
 router.use('/settings', settingRoutes);
 router.use('/dashboard', dashboardRoutes);
+router.use('/kyc', kycRoutes);
 
 export default router;

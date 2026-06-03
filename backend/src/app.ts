@@ -7,6 +7,7 @@ import path from 'path';
 import { errorHandler } from './middleware/errorHandler.middleware';
 import { rateLimiter } from './middleware/rateLimiter.middleware';
 import routes from './routes';
+import publicRoutes from './routes/public.routes';
 import logger from './utils/logger.util';
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
+app.use('/api/v1/public', rateLimiter, publicRoutes);
 app.use('/api/v1', rateLimiter, routes);
 
 app.get('/health', (req, res) => {

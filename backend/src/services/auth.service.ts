@@ -1,4 +1,5 @@
 import { User } from '../models/User';
+import { Tenant } from '../models/Tenant';
 import { hashPassword, comparePassword, generateTempPassword } from '../utils/password.util';
 import {
   generateAccessToken, generateRefreshToken, storeRefreshToken,
@@ -29,6 +30,8 @@ export class AuthService {
     await storeRefreshToken(user.id, user.tenantId, refreshToken);
     await user.update({ lastLogin: new Date() });
 
+    const tenant = await Tenant.findByPk(user.tenantId, { attributes: ['id', 'slug', 'plan', 'kycStatus'] });
+
     return {
       accessToken,
       refreshToken,
@@ -40,6 +43,12 @@ export class AuthService {
         avatar: user.avatar,
         tenantId: user.tenantId,
         isSuperAdmin: user.isSuperAdmin,
+      },
+      tenant: {
+        id: tenant?.id,
+        slug: tenant?.slug,
+        plan: tenant?.plan,
+        kycStatus: tenant?.kycStatus ?? 'not_submitted',
       },
     };
   }

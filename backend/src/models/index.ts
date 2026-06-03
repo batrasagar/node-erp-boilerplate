@@ -12,6 +12,7 @@ import { Notification } from './Notification';
 import { AuditLog } from './AuditLog';
 import { File } from './File';
 import { Setting } from './Setting';
+import { KycSubmission } from './KycSubmission';
 
 // Tenant associations
 Tenant.hasMany(Company, { foreignKey: 'tenantId', as: 'companies' });
@@ -69,7 +70,11 @@ AuditLog.belongsTo(Tenant, { foreignKey: 'tenantId', as: 'tenant' });
 File.belongsTo(User, { foreignKey: 'uploadedBy', as: 'uploader' });
 File.belongsTo(Tenant, { foreignKey: 'tenantId', as: 'tenant' });
 
+// KYC associations
+Tenant.hasOne(KycSubmission, { foreignKey: 'tenantId', as: 'kycSubmission' });
+KycSubmission.belongsTo(Tenant, { foreignKey: 'tenantId', as: 'tenant' });
+
 export {
   Tenant, Company, Branch, Department, User, Role, Permission,
-  RolePermission, UserRole, Menu, Notification, AuditLog, File, Setting,
+  RolePermission, UserRole, Menu, Notification, AuditLog, File, Setting, KycSubmission,
 };

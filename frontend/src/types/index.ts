@@ -1,13 +1,66 @@
+export type KycStatus = 'not_submitted' | 'pending' | 'under_review' | 'approved' | 'rejected';
+export type PlanId = 'starter' | 'professional' | 'enterprise';
+
 export interface Tenant {
   id: string;
   name: string;
   slug: string;
-  plan: 'starter' | 'professional' | 'enterprise';
+  plan: PlanId;
   status: 'active' | 'inactive' | 'suspended' | 'trial';
+  kycStatus?: KycStatus;
   domain?: string;
   logo?: string;
   primaryColor?: string;
   createdAt: string;
+}
+
+export interface Plan {
+  id: PlanId;
+  name: string;
+  price: number;
+  billing: 'free' | 'monthly';
+  description: string;
+  maxUsers: number;
+  maxCompanies: number;
+  maxBranches: number;
+  features: string[];
+  popular?: boolean;
+}
+
+export interface KycSubmission {
+  id: string;
+  tenantId: string;
+  businessName: string;
+  businessType: string;
+  registrationNumber?: string;
+  taxNumber?: string;
+  address: string;
+  city: string;
+  state?: string;
+  country: string;
+  postalCode?: string;
+  phone: string;
+  website?: string;
+  status: KycStatus;
+  rejectionReason?: string;
+  createdAt: string;
+}
+
+export interface SignupPayload {
+  plan: PlanId;
+  orgName: string;
+  orgSlug: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export interface SignupResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: AuthUser;
+  tenant: { id: string; name: string; slug: string; plan: PlanId; status: string; kycStatus: KycStatus };
 }
 
 export interface Company {
@@ -185,4 +238,5 @@ export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   user: AuthUser;
+  tenant?: { id: string; slug: string; plan: PlanId; kycStatus: KycStatus };
 }
