@@ -8,6 +8,7 @@ export interface Tenant {
   plan: PlanId;
   status: 'active' | 'inactive' | 'suspended' | 'trial';
   kycStatus?: KycStatus;
+  trialEndsAt?: string;
   domain?: string;
   logo?: string;
   primaryColor?: string;

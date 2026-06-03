@@ -67,7 +67,7 @@ const TenantsPage: React.FC = () => {
             <IonList style={{ background: 'transparent' }}>
               {tenants.map((tenant) => (
                 <IonItem key={tenant.id} button detail={false}
-                  onClick={() => history.push(`/app/tenants/${tenant.id}/edit`)}
+                  onClick={() => history.push(`/app/tenants/${tenant.id}`)}
                   style={{ '--background': '#fff' }}
                 >
                   <div slot="start" style={{
@@ -92,6 +92,11 @@ const TenantsPage: React.FC = () => {
                     <IonBadge color={tenant.status === 'active' ? 'success' : tenant.status === 'trial' ? 'warning' : 'medium'} style={{ fontSize: 11 }}>
                       {tenant.status}
                     </IonBadge>
+                    {tenant.kycStatus && tenant.kycStatus !== 'approved' && (
+                      <IonBadge color={tenant.kycStatus === 'pending' || tenant.kycStatus === 'under_review' ? 'warning' : tenant.kycStatus === 'rejected' ? 'danger' : 'medium'} style={{ fontSize: 10 }}>
+                        KYC
+                      </IonBadge>
+                    )}
                     <IonIcon icon={chevronForwardOutline} style={{ color: '#C7C7CC', fontSize: 16 }} />
                   </div>
                 </IonItem>

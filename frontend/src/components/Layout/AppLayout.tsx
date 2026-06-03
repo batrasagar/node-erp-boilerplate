@@ -7,6 +7,7 @@ import HomePage from '../../pages/Home/HomePage';
 import DashboardPage from '../../pages/Dashboard/DashboardPage';
 import TenantsPage from '../../pages/Tenants/TenantsPage';
 import TenantFormPage from '../../pages/Tenants/TenantFormPage';
+import TenantDetailPage from '../../pages/Tenants/TenantDetailPage';
 import CompaniesPage from '../../pages/Companies/CompaniesPage';
 import BranchesPage from '../../pages/Branches/BranchesPage';
 import DepartmentsPage from '../../pages/Departments/DepartmentsPage';
@@ -29,6 +30,7 @@ const AppLayout: React.FC = () => (
         <Route exact path="/app/dashboard" component={DashboardPage} />
         <Route exact path="/app/tenants" component={TenantsPage} />
         <Route exact path="/app/tenants/new" component={TenantFormPage} />
+        <Route exact path="/app/tenants/:id" component={TenantDetailPage} />
         <Route exact path="/app/tenants/:id/edit" component={TenantFormPage} />
         <Route exact path="/app/companies" component={CompaniesPage} />
         <Route exact path="/app/branches" component={BranchesPage} />

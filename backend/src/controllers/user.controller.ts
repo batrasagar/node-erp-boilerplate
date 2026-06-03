@@ -14,7 +14,10 @@ export class UserController {
   static async index(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { page, limit, offset } = getPagination(req);
-      const where: Record<string, unknown> = { tenantId: req.user!.tenantId };
+      const resolvedTenantId = req.user!.isSuperAdmin && req.query.tenantId
+        ? req.query.tenantId as string
+        : req.user!.tenantId;
+      const where: Record<string, unknown> = { tenantId: resolvedTenantId };
 
       if (req.query.search) {
         (where as any)[Op.or as unknown as string] = [
@@ -43,8 +46,11 @@ export class UserController {
 
   static async show(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const whereUser = req.user!.isSuperAdmin
+        ? { id: req.params.id }
+        : { id: req.params.id, tenantId: req.user!.tenantId };
       const user = await User.findOne({
-        where: { id: req.params.id, tenantId: req.user!.tenantId },
+        where: whereUser,
         attributes: { exclude: USER_EXCLUDE },
         include: [
           { model: Role, as: 'roles', include: [{ model: Permission, as: 'permissions' }] },
@@ -92,7 +98,8 @@ export class UserController {
 
   static async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const user = await User.findOne({ where: { id: req.params.id, tenantId: req.user!.tenantId } });
+      const whereUpdate = req.user!.isSuperAdmin ? { id: req.params.id } : { id: req.params.id, tenantId: req.user!.tenantId };
+      const user = await User.findOne({ where: whereUpdate });
       if (!user) { sendNotFound(res, 'User'); return; }
 
       const { password, roleIds, ...updateData } = req.body;
@@ -111,7 +118,8 @@ export class UserController {
 
   static async destroy(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const user = await User.findOne({ where: { id: req.params.id, tenantId: req.user!.tenantId } });
+      const whereDestroy = req.user!.isSuperAdmin ? { id: req.params.id } : { id: req.params.id, tenantId: req.user!.tenantId };
+      const user = await User.findOne({ where: whereDestroy });
       if (!user) { sendNotFound(res, 'User'); return; }
       await user.update({ status: 'inactive' });
       sendSuccess(res, null, 'User deactivated');
@@ -120,7 +128,8 @@ export class UserController {
 
   static async assignRoles(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const user = await User.findOne({ where: { id: req.params.id, tenantId: req.user!.tenantId } });
+      const whereRoles = req.user!.isSuperAdmin ? { id: req.params.id } : { id: req.params.id, tenantId: req.user!.tenantId };
+      const user = await User.findOne({ where: whereRoles });
       if (!user) { sendNotFound(res, 'User'); return; }
       await (user as any).setRoles(req.body.roleIds);
       await deleteCachePattern(`user_permissions:${user.id}:*`);
