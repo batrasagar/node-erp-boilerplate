@@ -101,7 +101,7 @@ export const PublicFooter: React.FC = () => {
 };
 
 const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', color: '#1C1C1E', overflowX: 'hidden' }}>
+  <div style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', color: '#1C1C1E', overflowX: 'hidden', overflowY: 'auto', height: '100%', position: 'absolute', inset: 0 }}>
     <PublicNavbar />
     {children}
     <PublicFooter />
