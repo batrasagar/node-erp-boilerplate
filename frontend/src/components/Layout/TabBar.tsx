@@ -16,7 +16,8 @@ import { useAuthStore } from '../../stores/authStore';
 
 const TabBar: React.FC = () => {
   const isAuth = useIsAuthenticated();
-  const isSuperAdmin = useAuthStore((s) => s.user?.isSuperAdmin);
+  const hasPermission = useAuthStore((s) => s.hasPermission);
+  const canSeeApprovals = hasPermission('approvals.read');
 
   const { data: unreadData } = useQuery({
     queryKey: ['notifications', 'unread-count'],
@@ -28,7 +29,7 @@ const TabBar: React.FC = () => {
   const { data: pendingKyc = 0 } = useQuery({
     queryKey: ['kyc-pending-count'],
     queryFn: kycService.pendingCount,
-    enabled: isAuth && !!isSuperAdmin,
+    enabled: isAuth && canSeeApprovals,
     refetchInterval: 60000,
   });
 
@@ -59,7 +60,7 @@ const TabBar: React.FC = () => {
         )}
       </IonTabButton>
 
-      {isSuperAdmin && (
+      {canSeeApprovals && (
         <IonTabButton tab="approvals" href="/app/approvals">
           <IonIcon ios={shieldCheckmark} md={shieldCheckmarkOutline} />
           <IonLabel>Approvals</IonLabel>

@@ -25,15 +25,18 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { title: 'Tenants', subtitle: 'Manage organizations', path: '/app/tenants', icon: businessOutline, color: '#007AFF' },
-  { title: 'Companies', subtitle: 'Business entities', path: '/app/companies', icon: businessOutline, color: '#5AC8FA' },
-  { title: 'Branches', subtitle: 'Office locations', path: '/app/branches', icon: gitBranchOutline, color: '#34C759' },
-  { title: 'Departments', subtitle: 'Organization units', path: '/app/departments', icon: layersOutline, color: '#FF9F0A' },
-  { title: 'Users', subtitle: 'Team members', path: '/app/users', icon: peopleOutline, color: '#5856D6' },
-  { title: 'Roles', subtitle: 'Access control', path: '/app/roles', icon: shieldCheckmarkOutline, color: '#FF2D55' },
-  { title: 'Menus', subtitle: 'Navigation config', path: '/app/menus', icon: menuOutline, color: '#AF52DE' },
-  { title: 'Audit Logs', subtitle: 'Activity history', path: '/app/audit-logs', icon: documentTextOutline, color: '#FF6B35' },
-  { title: 'Files', subtitle: 'File manager', path: '/app/files', icon: folderOutline, color: '#32ADE6' },
+  { title: 'Tenants',       subtitle: 'Manage organizations',  path: '/app/tenants',       icon: businessOutline,        color: '#007AFF', permission: 'tenants.read' },
+  { title: 'Companies',     subtitle: 'Business entities',     path: '/app/companies',     icon: businessOutline,        color: '#5AC8FA', permission: 'companies.read' },
+  { title: 'Branches',      subtitle: 'Office locations',      path: '/app/branches',      icon: gitBranchOutline,       color: '#34C759', permission: 'branches.read' },
+  { title: 'Departments',   subtitle: 'Organisation units',    path: '/app/departments',   icon: layersOutline,          color: '#FF9F0A', permission: 'departments.read' },
+  { title: 'Users',         subtitle: 'Team members',          path: '/app/users',         icon: peopleOutline,          color: '#5856D6', permission: 'users.read' },
+  { title: 'Roles',         subtitle: 'Access control',        path: '/app/roles',         icon: shieldCheckmarkOutline, color: '#FF2D55', permission: 'roles.read' },
+  { title: 'Menus',         subtitle: 'Navigation config',     path: '/app/menus',         icon: menuOutline,            color: '#AF52DE', permission: 'menus.read' },
+  { title: 'Approvals',     subtitle: 'KYC & workflows',       path: '/app/approvals',     icon: shieldCheckmarkOutline, color: '#30D158', permission: 'approvals.read' },
+  { title: 'Audit Logs',    subtitle: 'Activity history',      path: '/app/audit-logs',    icon: documentTextOutline,    color: '#FF6B35', permission: 'audit_logs.read' },
+  { title: 'Files',         subtitle: 'File manager',          path: '/app/files',         icon: folderOutline,          color: '#32ADE6', permission: 'files.read' },
+  { title: 'Notifications', subtitle: 'Alerts & messages',     path: '/app/notifications', icon: notificationsOutline,   color: '#FF9F0A', permission: 'notifications.read' },
+  { title: 'Settings',      subtitle: 'Platform settings',     path: '/app/settings',      icon: personCircleOutline,    color: '#636366', permission: 'settings.read' },
 ];
 
 const HomePage: React.FC = () => {
@@ -106,7 +109,7 @@ const HomePage: React.FC = () => {
         <p className="section-header">Modules</p>
         <div className="ios-grouped" style={{ margin: '0 16px', borderRadius: 16, overflow: 'hidden', background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
           <IonList style={{ background: 'transparent' }}>
-            {menuItems.map((item, i) => (
+            {menuItems.filter(item => !item.permission || hasPermission(item.permission)).map((item, i) => (
               <IonItem
                 key={i}
                 button

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton,
   IonButton, IonList, IonItem, IonLabel, IonInput, IonSelect, IonSelectOption,
@@ -11,6 +11,7 @@ import { userService } from '../../services/user.service';
 import { roleService } from '../../services/role.service';
 import { companyService } from '../../services/company.service';
 import { useUIStore } from '../../stores/uiStore';
+import { useAuthStore } from '../../stores/authStore';
 
 interface UserForm {
   firstName: string;
@@ -28,6 +29,8 @@ const UserFormPage: React.FC = () => {
   const history = useHistory();
   const queryClient = useQueryClient();
   const { showToast } = useUIStore();
+  const hasPermission = useAuthStore((s) => s.hasPermission);
+  const [newPassword, setNewPassword] = useState('');
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<UserForm>({
     defaultValues: { firstName: '', lastName: '', email: '', phone: '', status: 'active', roleIds: [], companyId: '' },
@@ -67,6 +70,12 @@ const UserFormPage: React.FC = () => {
     onError: (error: unknown) => {
       showToast((error as any)?.response?.data?.message || 'Failed to save user', 'error');
     },
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: (pwd: string) => userService.resetPassword(id!, pwd),
+    onSuccess: () => { showToast('Password reset successfully', 'success'); setNewPassword(''); },
+    onError: (error: unknown) => showToast((error as any)?.response?.data?.message || 'Failed to reset password', 'error'),
   });
 
   const itemStyle = { '--background': '#fff', '--padding-start': '16px' };
@@ -162,6 +171,38 @@ const UserFormPage: React.FC = () => {
             </IonItem>
           </IonList>
         </div>
+        {/* Reset Password — only when editing and caller has users.update */}
+        {isEdit && hasPermission('users.update') && (
+          <div style={{ margin: '16px 16px 0', borderRadius: 16, overflow: 'hidden', background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <div style={{ padding: '14px 16px', borderBottom: '1px solid #F2F2F7' }}>
+              <p style={{ margin: 0, fontWeight: 700, fontSize: 14, color: '#3C3C43' }}>Reset Password</p>
+              <p style={{ margin: '2px 0 0', fontSize: 12, color: '#8E8E93' }}>Force a new password for this user. They will be logged out immediately.</p>
+            </div>
+            <IonList style={{ background: 'transparent' }}>
+              <IonItem style={itemStyle}>
+                <IonLabel position="stacked">New Password (min 8 chars)</IonLabel>
+                <IonInput
+                  type="password"
+                  value={newPassword}
+                  onIonInput={(e) => setNewPassword(e.detail.value || '')}
+                  placeholder="Enter new password"
+                />
+              </IonItem>
+            </IonList>
+            <div style={{ padding: '12px 16px' }}>
+              <IonButton
+                expand="block"
+                color="warning"
+                disabled={newPassword.length < 8 || resetPasswordMutation.isPending}
+                onClick={() => resetPasswordMutation.mutate(newPassword)}
+                style={{ '--border-radius': '10px' }}
+              >
+                {resetPasswordMutation.isPending ? <IonSpinner name="crescent" /> : 'Reset Password'}
+              </IonButton>
+            </div>
+          </div>
+        )}
+
         <div style={{ height: 40 }} />
       </IonContent>
     </IonPage>

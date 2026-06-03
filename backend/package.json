@@ -8,7 +8,9 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint src --ext .ts",
-    "migrate": "ts-node src/migrations/run.ts"
+    "migrate": "ts-node src/migrations/run.ts",
+    "seed:default": "ts-node --transpile-only src/seed.ts",
+    "seed:curtina": "ts-node --transpile-only src/seeds/curtinaTenant.seed.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -13,5 +13,6 @@ router.post('/', authorize('users.create'), auditLog({ action: 'create', resourc
 router.put('/:id', authorize('users.update'), auditLog({ action: 'update', resource: 'User' }), UserController.update);
 router.delete('/:id', authorize('users.delete'), UserController.destroy);
 router.put('/:id/roles', authorize('users.update', 'roles.read'), UserController.assignRoles);
+router.put('/:id/reset-password', authorize('users.update'), UserController.resetPassword);
 
 export default router;

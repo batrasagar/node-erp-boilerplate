@@ -31,4 +31,9 @@ export const userService = {
     const { data } = await api.put(`/users/${id}/roles`, { roleIds });
     return data;
   },
+
+  resetPassword: async (id: string, password: string) => {
+    const { data } = await api.put(`/users/${id}/reset-password`, { password });
+    return data;
+  },
 };

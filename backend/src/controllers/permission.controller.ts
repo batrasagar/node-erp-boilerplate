@@ -59,6 +59,11 @@ export class PermissionController {
         { module: 'settings', action: 'read', resource: 'Setting', description: 'View settings' },
         { module: 'settings', action: 'update', resource: 'Setting', description: 'Update settings' },
         { module: 'dashboard', action: 'read', resource: 'Dashboard', description: 'View dashboard' },
+        { module: 'kyc', action: 'read', resource: 'KycSubmission', description: 'View KYC submissions' },
+        { module: 'kyc', action: 'submit', resource: 'KycSubmission', description: 'Submit KYC' },
+        { module: 'kyc', action: 'review', resource: 'KycSubmission', description: 'Review and approve KYC' },
+        { module: 'approvals', action: 'read', resource: 'Approval', description: 'View approvals queue' },
+        { module: 'approvals', action: 'manage', resource: 'Approval', description: 'Process approvals' },
       ];
 
       await Permission.bulkCreate(permissionDefs, { ignoreDuplicates: true });

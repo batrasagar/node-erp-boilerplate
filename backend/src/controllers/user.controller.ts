@@ -5,8 +5,9 @@ import { sendSuccess, sendCreated, sendNotFound } from '../utils/response.util';
 import { getPagination, getPaginationMeta } from '../utils/pagination.util';
 import { hashPassword, generateTempPassword } from '../utils/password.util';
 import { EmailService } from '../services/email.service';
-import { generateEmailVerificationToken } from '../utils/jwt.util';
+import { generateEmailVerificationToken, revokeRefreshToken } from '../utils/jwt.util';
 import { deleteCachePattern } from '../config/redis';
+import { sendError } from '../utils/response.util';
 
 const USER_EXCLUDE = ['password', 'refreshTokenHash', 'emailVerificationToken', 'passwordResetToken', 'passwordResetExpires'];
 
@@ -123,6 +124,24 @@ export class UserController {
       if (!user) { sendNotFound(res, 'User'); return; }
       await user.update({ status: 'inactive' });
       sendSuccess(res, null, 'User deactivated');
+    } catch (err) { next(err); }
+  }
+
+  static async resetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { password } = req.body;
+      if (!password || password.length < 8) { sendError(res, 'Password must be at least 8 characters', 400); return; }
+
+      const whereReset = req.user!.isSuperAdmin
+        ? { id: req.params.id }
+        : { id: req.params.id, tenantId: req.user!.tenantId };
+      const user = await User.findOne({ where: whereReset });
+      if (!user) { sendNotFound(res, 'User'); return; }
+
+      await user.update({ password: await hashPassword(password) });
+      await deleteCachePattern(`user_permissions:${user.id}:*`);
+      await revokeRefreshToken(user.id, user.tenantId);
+      sendSuccess(res, null, 'Password reset successfully');
     } catch (err) { next(err); }
   }
 
