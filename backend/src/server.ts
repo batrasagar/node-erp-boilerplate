@@ -12,7 +12,7 @@ async function bootstrap() {
     logger.info('Database connection established');
 
     if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync({ alter: true });
+      await sequelize.sync({ alter: { drop: false } });
       logger.info('Database synchronized');
     }
 
