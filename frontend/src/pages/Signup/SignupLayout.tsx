@@ -16,7 +16,7 @@ const SignupLayout: React.FC = () => {
   const currentStep = STEPS.findIndex((s) => location.pathname.includes(s.path));
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F2F2F7', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', background: '#F2F2F7', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       {/* Header */}
       <div style={{ background: '#fff', borderBottom: '1px solid #E5E5EA', padding: '16px 24px', display: 'flex', alignItems: 'center', gap: 12 }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: '#1C1C1E' }}>
