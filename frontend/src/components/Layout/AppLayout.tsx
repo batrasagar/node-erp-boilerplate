@@ -19,6 +19,7 @@ import NotificationsPage from '../../pages/Notifications/NotificationsPage';
 import AuditLogsPage from '../../pages/AuditLogs/AuditLogsPage';
 import SettingsPage from '../../pages/Settings/SettingsPage';
 import FileManagerPage from '../../pages/FileManager/FileManagerPage';
+import TenantApprovalsPage from '../../pages/Admin/TenantApprovalsPage';
 
 const AppLayout: React.FC = () => (
   <IonTabs>
@@ -42,6 +43,7 @@ const AppLayout: React.FC = () => (
         <Route exact path="/app/audit-logs" component={AuditLogsPage} />
         <Route exact path="/app/settings" component={SettingsPage} />
         <Route exact path="/app/files" component={FileManagerPage} />
+        <Route exact path="/app/approvals" component={TenantApprovalsPage} />
         <Redirect from="/app" to="/app/home" exact />
       </Switch>
     </IonRouterOutlet>

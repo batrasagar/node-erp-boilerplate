@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { KycSubmission } from '../models/KycSubmission';
 import { Tenant } from '../models/Tenant';
+import { Op } from 'sequelize';
 import { deleteCache } from '../config/redis';
 import { sendSuccess, sendCreated, sendError } from '../utils/response.util';
 
@@ -74,9 +75,20 @@ export class KycController {
   static async list(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { status } = req.query;
-      const where = status ? { status } : {};
-      const submissions = await KycSubmission.findAll({ where, order: [['createdAt', 'DESC']] });
+      const where: Record<string, unknown> = status ? { status } : {};
+      const submissions = await KycSubmission.findAll({
+        where,
+        order: [['createdAt', 'DESC']],
+        include: [{ model: Tenant, as: 'tenant', attributes: ['id', 'name', 'slug', 'plan', 'status', 'kycStatus', 'trialEndsAt', 'createdAt'] }],
+      });
       sendSuccess(res, submissions, 'KYC submissions retrieved');
+    } catch (err) { next(err); }
+  }
+
+  static async pendingCount(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const count = await KycSubmission.count({ where: { status: { [Op.in]: ['pending', 'under_review'] } } });
+      sendSuccess(res, { count }, 'Pending count retrieved');
     } catch (err) { next(err); }
   }
 }

@@ -6,19 +6,30 @@ import {
   peopleOutline, people,
   notificationsOutline, notifications,
   settingsOutline, settings,
+  shieldCheckmarkOutline, shieldCheckmark,
 } from 'ionicons/icons';
 import { useQuery } from '@tanstack/react-query';
 import { notificationService } from '../../services/role.service';
+import { kycService } from '../../services/kyc.service';
 import { useIsAuthenticated } from '../../hooks/useAuth';
+import { useAuthStore } from '../../stores/authStore';
 
 const TabBar: React.FC = () => {
   const isAuth = useIsAuthenticated();
+  const isSuperAdmin = useAuthStore((s) => s.user?.isSuperAdmin);
 
   const { data: unreadData } = useQuery({
     queryKey: ['notifications', 'unread-count'],
     queryFn: notificationService.unreadCount,
     enabled: isAuth,
     refetchInterval: 30000,
+  });
+
+  const { data: pendingKyc = 0 } = useQuery({
+    queryKey: ['kyc-pending-count'],
+    queryFn: kycService.pendingCount,
+    enabled: isAuth && !!isSuperAdmin,
+    refetchInterval: 60000,
   });
 
   const unreadCount = unreadData?.count || 0;
@@ -47,6 +58,14 @@ const TabBar: React.FC = () => {
           <IonBadge color="danger">{unreadCount > 99 ? '99+' : unreadCount}</IonBadge>
         )}
       </IonTabButton>
+
+      {isSuperAdmin && (
+        <IonTabButton tab="approvals" href="/app/approvals">
+          <IonIcon ios={shieldCheckmark} md={shieldCheckmarkOutline} />
+          <IonLabel>Approvals</IonLabel>
+          {pendingKyc > 0 && <IonBadge color="danger">{pendingKyc > 99 ? '99+' : pendingKyc}</IonBadge>}
+        </IonTabButton>
+      )}
 
       <IonTabButton tab="settings" href="/app/settings">
         <IonIcon ios={settings} md={settingsOutline} />

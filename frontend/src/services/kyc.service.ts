@@ -25,4 +25,19 @@ export const kycService = {
     const { data } = await api.get('/kyc/status');
     return data.data;
   },
+
+  list: async (status?: string): Promise<(KycSubmission & { tenant: any })[]> => {
+    const { data } = await api.get('/kyc', { params: status ? { status } : {} });
+    return data.data;
+  },
+
+  pendingCount: async (): Promise<number> => {
+    const { data } = await api.get('/kyc/pending-count');
+    return data.data.count;
+  },
+
+  review: async (id: string, status: 'approved' | 'rejected' | 'under_review', rejectionReason?: string) => {
+    const { data } = await api.put(`/kyc/${id}/review`, { status, rejectionReason });
+    return data.data;
+  },
 };
