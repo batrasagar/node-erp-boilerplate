@@ -23,6 +23,9 @@ import AppLayout from './components/Layout/AppLayout';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import KycGuard from './components/Auth/KycGuard';
 import LandingPage from './pages/Marketing/LandingPage';
+import PricingPage from './pages/Marketing/PricingPage';
+import FeaturesPage from './pages/Marketing/FeaturesPage';
+import ContactPage from './pages/Marketing/ContactPage';
 import SignupLayout from './pages/Signup/SignupLayout';
 import KycPage from './pages/KYC/KycPage';
 import KycPendingPage from './pages/KYC/KycPendingPage';
@@ -57,6 +60,9 @@ const App: React.FC = () => (
         <IonRouterOutlet id="main">
           <Switch>
             <Route path="/" component={LandingPage} exact />
+            <Route path="/features" component={FeaturesPage} exact />
+            <Route path="/pricing" component={PricingPage} exact />
+            <Route path="/contact" component={ContactPage} exact />
             <Route path="/login" component={LoginPage} exact />
             <Route path="/signup" component={SignupLayout} />
             <ProtectedRoute path="/app/kyc/pending" component={KycPendingPage} exact />
