@@ -21,10 +21,29 @@ export class PublicController {
   }
 
   static async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { plan, orgName, orgSlug, firstName, lastName, email, password } = req.body;
+
+    const missing = ['plan', 'orgName', 'orgSlug', 'firstName', 'lastName', 'email', 'password']
+      .filter((f) => !req.body[f]?.toString().trim());
+    if (missing.length) {
+      sendError(res, `Missing required fields: ${missing.join(', ')}`, 400);
+      return;
+    }
+    if (!/^[a-z0-9-]+$/.test(orgSlug) || orgSlug.length < 3) {
+      sendError(res, 'Slug must be at least 3 characters and contain only lowercase letters, numbers, and hyphens', 400);
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      sendError(res, 'Invalid email address', 400);
+      return;
+    }
+    if (password.length < 8) {
+      sendError(res, 'Password must be at least 8 characters', 400);
+      return;
+    }
+
     const t = await sequelize.transaction();
     try {
-      const { plan, orgName, orgSlug, firstName, lastName, email, password } = req.body;
-
       if (!PLANS[plan as keyof typeof PLANS]) {
         await t.rollback();
         sendError(res, 'Invalid plan selected', 400);
