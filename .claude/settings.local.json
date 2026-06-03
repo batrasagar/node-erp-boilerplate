@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version)",
+      "Bash(docker compose *)",
+      "PowerShell(docker compose version *)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(npm *)",
+      "PowerShell(try { $c = New-Object System.Net.Sockets.TcpClient; $c.Connect\\('127.0.0.1', 3306\\); \"MySQL: running\"; $c.Close\\(\\) } catch { \"MySQL: not running\" }; try { $c = New-Object System.Net.Sockets.TcpClient; $c.Connect\\('127.0.0.1', 6379\\); \"Redis: running\"; $c.Close\\(\\) } catch { \"Redis: not running\" })",
+      "PowerShell(mysql *)",
+      "PowerShell(Get-ChildItem \"C:\\\\\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"xampp|wamp|laragon|mysql|maria\" } | Select-Object Name)",
+      "PowerShell(Get-ChildItem \"D:\\\\\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"xampp|wamp|laragon|mysql|maria\" } | Select-Object Name)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(Start-Sleep -Seconds 5; Get-Content \"C:\\\\Users\\\\HP\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D---sagar-php-node-boilerplate\\\\6acab6f6-ee24-42f5-a002-53ef8f5ed7bc\\\\tasks\\\\b6h0n834x.output\" | Where-Object { $_ -match \"info|warn|error|Server running|failed|Redis\" } | Select-Object -Last 15)",
+      "PowerShell(Get-Content \"C:\\\\Users\\\\HP\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D---sagar-php-node-boilerplate\\\\6acab6f6-ee24-42f5-a002-53ef8f5ed7bc\\\\tasks\\\\b6h0n834x.output\" | Where-Object { $_ -match \"Server running|Database synchronized|Failed to start\" })",
+      "PowerShell(try { $c = New-Object System.Net.Sockets.TcpClient; $c.Connect\\('127.0.0.1', 3000\\); \"Port 3000: open\"; $c.Close\\(\\) } catch { \"Port 3000: closed\" })",
+      "PowerShell($lines = Get-Content \"C:\\\\Users\\\\HP\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D---sagar-php-node-boilerplate\\\\6acab6f6-ee24-42f5-a002-53ef8f5ed7bc\\\\tasks\\\\b6h0n834x.output\"; Write-Output \"Total lines: $\\($lines.Count\\)\"; $lines | Select-Object -Last 5)",
+      "PowerShell(netstat *)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3000/api/v1/health\" -UseBasicParsing -ErrorAction SilentlyContinue | Select-Object StatusCode, Content)",
+      "PowerShell(choco *)",
+      "PowerShell(Start-Process powershell -Verb RunAs -ArgumentList \"-NoProfile -Command `\"choco install redis-64 -y; Start-Sleep 5`\"\" -Wait 2>&1; Write-Output \"Done\")"
+    ]
+  }
+}

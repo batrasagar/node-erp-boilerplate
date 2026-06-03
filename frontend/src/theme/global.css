@@ -1,0 +1,219 @@
+@import './variables.css';
+
+/* iOS-first Reset & Global Styles */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* iOS Font Smoothing */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--ion-font-family);
+  background-color: var(--erp-grouped-bg);
+  overscroll-behavior-y: none;
+}
+
+/* iOS Large Title Style */
+.ios-large-title {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.37px;
+  color: #000000;
+  line-height: 1.2;
+}
+
+/* iOS Navigation Title */
+.ios-nav-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.41px;
+}
+
+/* Ionic Overrides for iOS HIG */
+ion-header {
+  --background: rgba(255, 255, 255, 0.85);
+}
+
+ion-toolbar {
+  --background: transparent;
+  --border-style: none;
+}
+
+ion-content {
+  --background: var(--erp-grouped-bg);
+}
+
+/* iOS Grouped List Style */
+ion-list {
+  background: transparent !important;
+  padding: 0;
+}
+
+ion-list.ios-grouped {
+  margin: 0 16px 20px;
+  border-radius: var(--erp-border-radius-lg);
+  overflow: hidden;
+  background: #ffffff !important;
+  box-shadow: var(--erp-shadow-sm);
+}
+
+ion-item {
+  --background: #ffffff;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 44px;
+  --border-color: var(--erp-separator);
+}
+
+ion-item:last-child {
+  --inner-border-width: 0;
+}
+
+/* iOS-style Cards */
+.ios-card {
+  background: #ffffff;
+  border-radius: var(--erp-border-radius-lg);
+  box-shadow: var(--erp-shadow-sm);
+  overflow: hidden;
+  margin: 0 16px 12px;
+}
+
+/* iOS Button Styles */
+ion-button {
+  --border-radius: var(--erp-border-radius-md);
+  --box-shadow: none;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+ion-button[expand="block"] {
+  --border-radius: var(--erp-border-radius-md);
+  height: 50px;
+  font-size: 17px;
+}
+
+/* iOS Input Styles */
+ion-input,
+ion-textarea {
+  --background: #F2F2F7;
+  --border-radius: var(--erp-border-radius-sm);
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+}
+
+/* iOS Search Bar */
+ion-searchbar {
+  --background: rgba(118, 118, 128, 0.12);
+  --border-radius: 10px;
+  --box-shadow: none;
+  --placeholder-color: #8E8E93;
+  --icon-color: #8E8E93;
+  padding-top: 4px;
+  padding-bottom: 8px;
+}
+
+/* iOS Tab Bar */
+ion-tab-bar {
+  --background: rgba(255, 255, 255, 0.9);
+  --border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+ion-tab-button {
+  --color: #8E8E93;
+  --color-selected: #007AFF;
+  --padding-bottom: 0;
+}
+
+/* iOS Segment */
+ion-segment {
+  --background: rgba(118, 118, 128, 0.12);
+  border-radius: 9px;
+  padding: 2px;
+}
+
+ion-segment-button {
+  --border-radius: 7px;
+  --color: #3C3C43;
+  --color-checked: #000000;
+  --indicator-color: #ffffff;
+  --indicator-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-height: 28px;
+}
+
+/* Stat Cards */
+.stat-card {
+  background: #ffffff;
+  border-radius: var(--erp-border-radius-lg);
+  padding: 16px;
+  box-shadow: var(--erp-shadow-sm);
+}
+
+/* Section Header iOS Style */
+.section-header {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6C6C70;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 16px 4px;
+}
+
+/* Pull to Refresh */
+ion-refresher {
+  margin-top: -1px;
+}
+
+/* Safe Area */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Badge */
+.ios-badge {
+  background: #FF3B30;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Skeleton Loading */
+.skeleton-line {
+  background: linear-gradient(90deg, #F2F2F7 25%, #E5E5EA 50%, #F2F2F7 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Avatar */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--ion-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ion-color-primary);
+}
