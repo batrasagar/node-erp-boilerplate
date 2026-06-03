@@ -77,8 +77,9 @@ const LoginPage: React.FC = () => {
                   rules={{ required: 'Organization is required' }}
                   render={({ field }) => (
                     <IonInput
-                      {...field}
+                      value={field.value}
                       onIonInput={(e) => field.onChange(e.detail.value)}
+                      onBlur={field.onBlur}
                       placeholder="your-organization"
                       fill="outline"
                       style={{ '--border-radius': '10px' }}
@@ -101,9 +102,10 @@ const LoginPage: React.FC = () => {
                   rules={{ required: 'Email is required', pattern: { value: /^\S+@\S+\.\S+$/, message: 'Invalid email' } }}
                   render={({ field }) => (
                     <IonInput
-                      {...field}
-                      type="email"
+                      value={field.value}
                       onIonInput={(e) => field.onChange(e.detail.value)}
+                      onBlur={field.onBlur}
+                      type="email"
                       placeholder="you@example.com"
                       fill="outline"
                       style={{ '--border-radius': '10px' }}
@@ -126,9 +128,10 @@ const LoginPage: React.FC = () => {
                   rules={{ required: 'Password is required', minLength: { value: 6, message: 'Min 6 characters' } }}
                   render={({ field }) => (
                     <IonInput
-                      {...field}
-                      type="password"
+                      value={field.value}
                       onIonInput={(e) => field.onChange(e.detail.value)}
+                      onBlur={field.onBlur}
+                      type="password"
                       placeholder="••••••••"
                       fill="outline"
                       style={{ '--border-radius': '10px' }}

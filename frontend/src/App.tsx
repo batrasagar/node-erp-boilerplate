@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonToast, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -22,6 +22,7 @@ import './theme/global.css';
 import LoginPage from './pages/Login/LoginPage';
 import AppLayout from './components/Layout/AppLayout';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
+import { useUIStore } from './stores/uiStore';
 
 setupIonicReact({
   mode: 'ios',
@@ -30,9 +31,29 @@ setupIonicReact({
   swipeBackEnabled: true,
 });
 
+const GlobalToasts: React.FC = () => {
+  const { toasts, dismissToast } = useUIStore();
+  return (
+    <>
+      {toasts.map((t) => (
+        <IonToast
+          key={t.id}
+          isOpen
+          message={t.message}
+          duration={t.duration}
+          color={t.type === 'error' ? 'danger' : t.type === 'success' ? 'success' : t.type === 'warning' ? 'warning' : 'medium'}
+          position="top"
+          onDidDismiss={() => dismissToast(t.id)}
+        />
+      ))}
+    </>
+  );
+};
+
 const App: React.FC = () => (
   <QueryClientProvider client={queryClient}>
     <IonApp>
+      <GlobalToasts />
       <IonReactRouter>
         <IonRouterOutlet id="main">
           <Switch>
